@@ -124,10 +124,13 @@ export function Navbar() {
           {/* Right Actions */}
           <div className="flex items-center gap-4">
             {/* Sign In - Desktop */}
-            <button className="hidden items-center gap-2 text-sm font-medium text-foreground/80 transition-colors hover:text-secondary lg:flex">
+            <Link
+              to="/signin"
+              className="hidden items-center gap-2 text-sm font-medium text-foreground/80 transition-colors hover:text-secondary lg:flex"
+            >
               <User className="h-5 w-5" />
               <span>Sign In</span>
-            </button>
+            </Link>
 
             {/* Cart */}
             <Link
@@ -221,10 +224,14 @@ export function Navbar() {
                 </div>
 
                 {/* Mobile Sign In */}
-                <button className="flex w-full items-center gap-2 rounded-md px-3 py-2 font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-secondary">
+                <Link
+                  to="/signin"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="flex w-full items-center gap-2 rounded-md px-3 py-2 font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-secondary"
+                >
                   <User className="h-5 w-5" />
                   <span>Sign In</span>
-                </button>
+                </Link>
               </div>
             </motion.div>
           )}
