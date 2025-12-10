@@ -63,7 +63,7 @@ export function Footer() {
           <div className="lg:col-span-2">
             <Link to="/" className="flex items-center gap-2 text-xl font-display font-bold">
               <Palette className="h-7 w-7 text-accent" />
-              <span>ArtCanvas</span>
+              <span>MyArtSpace</span>
             </Link>
             <p className="mt-4 max-w-sm text-sm text-primary-foreground/70">
               Discover extraordinary art pieces from talented artists around the world. 
@@ -174,7 +174,7 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-primary-foreground/10 py-6">
           <div className="flex flex-col items-center justify-between gap-4 text-center text-sm text-primary-foreground/50 md:flex-row md:text-left">
-            <p>© 2024 ArtCanvas. All rights reserved.</p>
+            <p>© 2024 MyArtSpace. All rights reserved.</p>
             <div className="flex gap-6">
               <a href="#" className="transition-colors hover:text-accent">Privacy Policy</a>
               <a href="#" className="transition-colors hover:text-accent">Terms of Service</a>

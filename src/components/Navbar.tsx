@@ -44,7 +44,7 @@ export function Navbar() {
             className="flex items-center gap-2 text-xl font-display font-bold text-foreground transition-colors hover:text-secondary"
           >
             <Palette className="h-7 w-7 text-accent" />
-            <span className="hidden sm:inline">ArtCanvas</span>
+            <span className="hidden sm:inline">MyArtSpace</span>
           </Link>
 
           {/* Desktop Navigation */}
