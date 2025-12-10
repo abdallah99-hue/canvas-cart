@@ -1,0 +1,38 @@
+[
+  {
+    "id": "landscape",
+    "name": "Landscape",
+    "description": "Breathtaking views of nature and scenery",
+    "image": "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=400&q=80"
+  },
+  {
+    "id": "abstract",
+    "name": "Abstract",
+    "description": "Bold expressions of color and form",
+    "image": "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=400&q=80"
+  },
+  {
+    "id": "seascape",
+    "name": "Seascape",
+    "description": "The beauty and power of the ocean",
+    "image": "https://images.unsplash.com/photo-1518998053901-5348d3961a04?w=400&q=80"
+  },
+  {
+    "id": "portrait",
+    "name": "Portrait",
+    "description": "Capturing the human spirit",
+    "image": "https://images.unsplash.com/photo-1578321272176-b7bbc0679853?w=400&q=80"
+  },
+  {
+    "id": "still-life",
+    "name": "Still Life",
+    "description": "Beauty in everyday objects",
+    "image": "https://images.unsplash.com/photo-1579783901586-d88db74b4fe4?w=400&q=80"
+  },
+  {
+    "id": "urban",
+    "name": "Urban",
+    "description": "City life and architecture",
+    "image": "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=400&q=80"
+  }
+]

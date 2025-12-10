@@ -1,0 +1,282 @@
+[
+  {
+    "id": "1",
+    "sku": "ART-001",
+    "name": "Sunset Over Mountains",
+    "artist": "Elena Rivera",
+    "category": "Landscape",
+    "price": 1250,
+    "originalPrice": 1500,
+    "image": "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=800&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=800&q=80",
+      "https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?w=800&q=80"
+    ],
+    "rating": 4.8,
+    "reviews": 24,
+    "description": "A breathtaking oil painting capturing the golden hour over majestic mountain peaks. The warm hues blend seamlessly with cool shadows, creating a serene atmosphere.",
+    "specs": {
+      "medium": "Oil on Canvas",
+      "size": "36\" x 24\"",
+      "frame": "Included - Gold Leaf",
+      "year": "2024"
+    },
+    "featured": true,
+    "inStock": true
+  },
+  {
+    "id": "2",
+    "sku": "ART-002",
+    "name": "Abstract Dreams",
+    "artist": "Marcus Chen",
+    "category": "Abstract",
+    "price": 890,
+    "image": "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=800&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=800&q=80",
+      "https://images.unsplash.com/photo-1549887534-1541e9326642?w=800&q=80"
+    ],
+    "rating": 4.6,
+    "reviews": 18,
+    "description": "Bold geometric shapes dance across the canvas in this vibrant abstract piece. Perfect for modern interiors seeking a statement piece.",
+    "specs": {
+      "medium": "Acrylic on Canvas",
+      "size": "30\" x 30\"",
+      "frame": "Not Included",
+      "year": "2024"
+    },
+    "featured": true,
+    "inStock": true
+  },
+  {
+    "id": "3",
+    "sku": "ART-003",
+    "name": "Ocean Serenity",
+    "artist": "Sofia Laurent",
+    "category": "Seascape",
+    "price": 1680,
+    "image": "https://images.unsplash.com/photo-1518998053901-5348d3961a04?w=800&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1518998053901-5348d3961a04?w=800&q=80"
+    ],
+    "rating": 4.9,
+    "reviews": 32,
+    "description": "Waves gently crash against a sandy shore in this peaceful seascape. The artist masterfully captures the movement and tranquility of the ocean.",
+    "specs": {
+      "medium": "Oil on Canvas",
+      "size": "48\" x 36\"",
+      "frame": "Included - Driftwood Style",
+      "year": "2023"
+    },
+    "featured": true,
+    "inStock": true
+  },
+  {
+    "id": "4",
+    "sku": "ART-004",
+    "name": "City Lights",
+    "artist": "James Morrison",
+    "category": "Urban",
+    "price": 750,
+    "image": "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=800&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=800&q=80"
+    ],
+    "rating": 4.5,
+    "reviews": 15,
+    "description": "A nocturnal cityscape alive with glowing windows and street lights. The impressionistic style creates a dreamy urban atmosphere.",
+    "specs": {
+      "medium": "Oil on Canvas",
+      "size": "24\" x 18\"",
+      "frame": "Included - Black Wood",
+      "year": "2024"
+    },
+    "featured": false,
+    "inStock": true
+  },
+  {
+    "id": "5",
+    "sku": "ART-005",
+    "name": "Floral Symphony",
+    "artist": "Lily Zhang",
+    "category": "Still Life",
+    "price": 580,
+    "image": "https://images.unsplash.com/photo-1579783901586-d88db74b4fe4?w=800&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1579783901586-d88db74b4fe4?w=800&q=80"
+    ],
+    "rating": 4.7,
+    "reviews": 21,
+    "description": "A stunning arrangement of wildflowers bursting with color. Each petal is meticulously rendered with incredible attention to detail.",
+    "specs": {
+      "medium": "Watercolor on Paper",
+      "size": "20\" x 16\"",
+      "frame": "Included - White Wood",
+      "year": "2024"
+    },
+    "featured": false,
+    "inStock": true
+  },
+  {
+    "id": "6",
+    "sku": "ART-006",
+    "name": "Portrait of Solitude",
+    "artist": "David Park",
+    "category": "Portrait",
+    "price": 2200,
+    "originalPrice": 2500,
+    "image": "https://images.unsplash.com/photo-1578321272176-b7bbc0679853?w=800&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1578321272176-b7bbc0679853?w=800&q=80"
+    ],
+    "rating": 4.9,
+    "reviews": 28,
+    "description": "An evocative portrait capturing deep emotion and introspection. The play of light and shadow creates a powerful, intimate connection.",
+    "specs": {
+      "medium": "Oil on Canvas",
+      "size": "40\" x 30\"",
+      "frame": "Included - Ornate Gold",
+      "year": "2023"
+    },
+    "featured": true,
+    "inStock": true
+  },
+  {
+    "id": "7",
+    "sku": "ART-007",
+    "name": "Forest Whispers",
+    "artist": "Elena Rivera",
+    "category": "Landscape",
+    "price": 1100,
+    "image": "https://images.unsplash.com/photo-1549887534-1541e9326642?w=800&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1549887534-1541e9326642?w=800&q=80"
+    ],
+    "rating": 4.6,
+    "reviews": 19,
+    "description": "Sunlight filters through ancient trees in this enchanting forest scene. The dappled light creates a magical, otherworldly atmosphere.",
+    "specs": {
+      "medium": "Oil on Canvas",
+      "size": "32\" x 24\"",
+      "frame": "Included - Natural Oak",
+      "year": "2024"
+    },
+    "featured": false,
+    "inStock": true
+  },
+  {
+    "id": "8",
+    "sku": "ART-008",
+    "name": "Geometric Fusion",
+    "artist": "Marcus Chen",
+    "category": "Abstract",
+    "price": 1450,
+    "image": "https://images.unsplash.com/photo-1547826039-bfc35e0f1ea8?w=800&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1547826039-bfc35e0f1ea8?w=800&q=80"
+    ],
+    "rating": 4.8,
+    "reviews": 22,
+    "description": "A sophisticated blend of geometric patterns and organic forms. Rich colors and precise lines create visual harmony and depth.",
+    "specs": {
+      "medium": "Acrylic on Canvas",
+      "size": "40\" x 40\"",
+      "frame": "Not Included",
+      "year": "2024"
+    },
+    "featured": false,
+    "inStock": true
+  },
+  {
+    "id": "9",
+    "sku": "ART-009",
+    "name": "Mediterranean Dream",
+    "artist": "Sofia Laurent",
+    "category": "Seascape",
+    "price": 1320,
+    "image": "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=800&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=800&q=80"
+    ],
+    "rating": 4.7,
+    "reviews": 16,
+    "description": "Azure waters meet white-washed buildings in this stunning Mediterranean vista. The vibrant colors evoke summer warmth and relaxation.",
+    "specs": {
+      "medium": "Oil on Canvas",
+      "size": "36\" x 28\"",
+      "frame": "Included - White Wood",
+      "year": "2024"
+    },
+    "featured": false,
+    "inStock": true
+  },
+  {
+    "id": "10",
+    "sku": "ART-010",
+    "name": "Autumn Reflections",
+    "artist": "James Morrison",
+    "category": "Landscape",
+    "price": 980,
+    "image": "https://images.unsplash.com/photo-1578301978018-3005759f48f7?w=800&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1578301978018-3005759f48f7?w=800&q=80"
+    ],
+    "rating": 4.5,
+    "reviews": 14,
+    "description": "Golden autumn leaves reflect in a still pond. The warm palette and peaceful composition bring the beauty of fall indoors.",
+    "specs": {
+      "medium": "Oil on Canvas",
+      "size": "28\" x 22\"",
+      "frame": "Included - Walnut",
+      "year": "2023"
+    },
+    "featured": false,
+    "inStock": true
+  },
+  {
+    "id": "11",
+    "sku": "ART-011",
+    "name": "Vibrant Botanicals",
+    "artist": "Lily Zhang",
+    "category": "Still Life",
+    "price": 720,
+    "image": "https://images.unsplash.com/photo-1582201942988-13e60e4556ee?w=800&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1582201942988-13e60e4556ee?w=800&q=80"
+    ],
+    "rating": 4.6,
+    "reviews": 17,
+    "description": "Exotic plants and flowers create a lush botanical study. The detailed brushwork brings each leaf and petal to life.",
+    "specs": {
+      "medium": "Watercolor on Paper",
+      "size": "24\" x 18\"",
+      "frame": "Included - Natural Bamboo",
+      "year": "2024"
+    },
+    "featured": false,
+    "inStock": true
+  },
+  {
+    "id": "12",
+    "sku": "ART-012",
+    "name": "Contemplation",
+    "artist": "David Park",
+    "category": "Portrait",
+    "price": 1850,
+    "image": "https://images.unsplash.com/photo-1544967082-d9d25d867d66?w=800&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1544967082-d9d25d867d66?w=800&q=80"
+    ],
+    "rating": 4.8,
+    "reviews": 25,
+    "description": "A thoughtful figure gazes into the distance in this moving portrait. The masterful use of color creates emotional resonance.",
+    "specs": {
+      "medium": "Oil on Canvas",
+      "size": "36\" x 28\"",
+      "frame": "Included - Black Wood",
+      "year": "2024"
+    },
+    "featured": false,
+    "inStock": true
+  }
+]
