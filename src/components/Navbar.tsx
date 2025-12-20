@@ -11,6 +11,7 @@ import {
   ChevronDown 
 } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
+import { useAuth } from '@/context/AuthContext';
 import { cn } from '@/lib/utils';
 import categories from '@/data/categories.json';
 
@@ -224,14 +225,31 @@ export function Navbar() {
                 </div>
 
                 {/* Mobile Sign In */}
-                <Link
-                  to="/signin"
-                  onClick={() => setIsMenuOpen(false)}
-                  className="flex w-full items-center gap-2 rounded-md px-3 py-2 font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-secondary"
-                >
-                  <User className="h-5 w-5" />
-                  <span>Sign In</span>
-                </Link>
+                {user ? (
+                  <div className="border-t border-border pt-4">
+                    <div className="flex items-center justify-between px-3 py-2">
+                      <span className="text-sm font-medium text-foreground/80">Hi, {user.name}</span>
+                      <button
+                        onClick={() => {
+                          logout();
+                          setIsMenuOpen(false);
+                        }}
+                        className="text-sm font-medium text-destructive hover:text-destructive/80"
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <Link
+                    to="/signin"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="flex w-full items-center gap-2 rounded-md px-3 py-2 font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-secondary"
+                  >
+                    <User className="h-5 w-5" />
+                    <span>Sign In</span>
+                  </Link>
+                )}
               </div>
             </motion.div>
           )}
