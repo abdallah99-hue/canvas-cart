@@ -14,11 +14,13 @@ const generateToken = (id) => {
 // @access  Public
 router.post('/register', async (req, res) => {
   const { name, email, password } = req.body;
+  console.log('Register request:', req.body);
 
   try {
     const userExists = await User.findOne({ email });
 
     if (userExists) {
+      console.log('User already exists:', email);
       return res.status(400).json({ message: 'User already exists' });
     }
 
