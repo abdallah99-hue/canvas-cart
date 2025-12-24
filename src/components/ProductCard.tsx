@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ShoppingCart, Star, Heart } from 'lucide-react';
 import { Product } from '@/types';
-import { formatCurrency } from '@/utils/formatCurrency';
+import { useCurrency } from '@/context/CurrencyContext';
 import { useCart } from '@/context/CartContext';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
@@ -14,6 +14,7 @@ interface ProductCardProps {
 
 export function ProductCard({ product, index = 0 }: ProductCardProps) {
   const { addToCart, getItemQuantity } = useCart();
+  const { formatPrice } = useCurrency();
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
 
@@ -127,11 +128,11 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
             {/* Price */}
             <div className="mt-3 flex items-center gap-2">
               <span className="text-lg font-bold text-foreground">
-                {formatCurrency(product.price)}
+                {formatPrice(product.price)}
               </span>
               {product.originalPrice && (
                 <span className="text-sm text-muted-foreground line-through">
-                  {formatCurrency(product.originalPrice)}
+                  {formatPrice(product.originalPrice)}
                 </span>
               )}
             </div>

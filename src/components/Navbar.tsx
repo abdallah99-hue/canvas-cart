@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, FormEvent } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
+import { CurrencySelector } from '@/components/CurrencySelector';
 import { cn } from '@/lib/utils';
 import categories from '@/data/categories.json';
 
@@ -26,9 +27,10 @@ export function Navbar() {
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const { totalItems } = useCart();
+  const { user, logout } = useAuth();
   const location = useLocation();
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = (e: FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
       window.location.href = `/products?search=${encodeURIComponent(searchQuery)}`;
@@ -49,7 +51,7 @@ export function Navbar() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden items-center gap-8 lg:flex">
+          <div className="hidden items-center gap-8 lg:flex ml-8">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -124,6 +126,10 @@ export function Navbar() {
 
           {/* Right Actions */}
           <div className="flex items-center gap-4">
+            <div className="hidden lg:block">
+              <CurrencySelector />
+            </div>
+
             {/* Sign In - Desktop */}
             <Link
               to="/signin"
@@ -222,6 +228,14 @@ export function Navbar() {
                       </Link>
                     ))}
                   </div>
+                </div>
+
+                {/* Mobile Currency Selector */}
+                <div className="border-t border-border pt-4 px-3">
+                   <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    Currency
+                  </p>
+                  <CurrencySelector />
                 </div>
 
                 {/* Mobile Sign In */}

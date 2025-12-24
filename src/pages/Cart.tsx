@@ -2,10 +2,11 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ShoppingBag, ArrowRight, Plus, Minus, X, Trash2 } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
-import { formatCurrency } from '@/utils/formatCurrency';
+import { useCurrency } from '@/context/CurrencyContext';
 
 export default function Cart() {
   const { items, updateQuantity, removeFromCart, clearCart, subtotal, shipping, total } = useCart();
+  const { formatPrice } = useCurrency();
 
   if (items.length === 0) {
     return (
@@ -118,11 +119,11 @@ export default function Cart() {
                       {/* Price */}
                       <div className="text-right">
                         <p className="text-lg font-bold text-foreground">
-                          {formatCurrency(item.product.price * item.quantity)}
+                          {formatPrice(item.product.price * item.quantity)}
                         </p>
                         {item.quantity > 1 && (
                           <p className="text-sm text-muted-foreground">
-                            {formatCurrency(item.product.price)} each
+                            {formatPrice(item.product.price)} each
                           </p>
                         )}
                       </div>
@@ -154,7 +155,7 @@ export default function Cart() {
               <div className="mt-6 space-y-3">
                 <div className="flex justify-between text-foreground">
                   <span>Subtotal</span>
-                  <span className="font-medium">{formatCurrency(subtotal)}</span>
+                  <span className="font-medium">{formatPrice(subtotal)}</span>
                 </div>
                 <div className="flex justify-between text-foreground">
                   <span>Shipping</span>
@@ -162,19 +163,19 @@ export default function Cart() {
                     {shipping === 0 ? (
                       <span className="text-success">Free</span>
                     ) : (
-                      formatCurrency(shipping)
+                      formatPrice(shipping)
                     )}
                   </span>
                 </div>
                 {shipping > 0 && (
                   <p className="text-sm text-muted-foreground">
-                    Add {formatCurrency(500 - subtotal)} more for free shipping!
+                    Add {formatPrice(500 - subtotal)} more for free shipping!
                   </p>
                 )}
                 <div className="border-t border-border pt-3">
                   <div className="flex justify-between text-lg font-bold text-foreground">
                     <span>Total</span>
-                    <span>{formatCurrency(total)}</span>
+                    <span>{formatPrice(total)}</span>
                   </div>
                 </div>
               </div>

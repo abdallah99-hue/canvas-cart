@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import productsData from '@/data/products.json';
 import { Product, Review } from '@/types';
-import { formatCurrency } from '@/utils/formatCurrency';
+import { useCurrency } from '@/context/CurrencyContext';
 import { useCart } from '@/context/CartContext';
 import { ProductCard } from '@/components/ProductCard';
 import { cn } from '@/lib/utils';
@@ -53,6 +53,7 @@ export default function ProductDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { addToCart, getItemQuantity } = useCart();
+  const { formatPrice } = useCurrency();
   
   const product = (productsData as Product[]).find((p) => p.id === id);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -245,12 +246,12 @@ export default function ProductDetail() {
             {/* Price */}
             <div className="flex items-baseline gap-3">
               <span className="font-display text-3xl font-bold text-foreground">
-                {formatCurrency(product.price)}
+                {formatPrice(product.price)}
               </span>
               {product.originalPrice && (
                 <>
                   <span className="text-xl text-muted-foreground line-through">
-                    {formatCurrency(product.originalPrice)}
+                    {formatPrice(product.originalPrice)}
                   </span>
                   <span className="rounded-full bg-accent/10 px-2 py-0.5 text-sm font-semibold text-accent">
                     Save {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}%

@@ -1,9 +1,10 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, SlidersHorizontal, X, ChevronDown } from 'lucide-react';
 import { Product } from '@/types';
 import categories from '@/data/categories.json';
 import { cn } from '@/lib/utils';
+import { useCurrency } from '@/context/CurrencyContext';
 
 interface ProductFiltersProps {
   products: Product[];
@@ -11,14 +12,6 @@ interface ProductFiltersProps {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
 }
-
-const priceRanges = [
-  { label: 'All Prices', min: 0, max: Infinity },
-  { label: 'Under $500', min: 0, max: 500 },
-  { label: '$500 - $1,000', min: 500, max: 1000 },
-  { label: '$1,000 - $2,000', min: 1000, max: 2000 },
-  { label: 'Over $2,000', min: 2000, max: Infinity },
-];
 
 const sortOptions = [
   { label: 'Featured', value: 'featured' },
@@ -34,13 +27,37 @@ export function ProductFilters({
   searchQuery,
   setSearchQuery,
 }: ProductFiltersProps) {
+  const { formatPrice } = useCurrency();
   const [selectedCategory, setSelectedCategory] = useState<string>('');
+  
+  const priceRanges = useMemo(() => [
+    { label: 'All Prices', min: 0, max: Infinity },
+    { label: `Under ${formatPrice(500)}`, min: 0, max: 500 },
+    { label: `${formatPrice(500)} - ${formatPrice(1000)}`, min: 500, max: 1000 },
+    { label: `${formatPrice(1000)} - ${formatPrice(2000)}`, min: 1000, max: 2000 },
+    { label: `Over ${formatPrice(2000)}`, min: 2000, max: Infinity },
+  ], [formatPrice]);
+
   const [selectedPriceRange, setSelectedPriceRange] = useState(priceRanges[0]);
   const [sortBy, setSortBy] = useState(sortOptions[0]);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
 
+  // When currency changes, the selected range object might mismatch the new priceRanges array objects
+  // We need to keep track of the selected range index or key instead of the object itself
+  // Or simpler: update selectedPriceRange when priceRanges changes if it's not the default
+  useEffect(() => {
+    // Check if the current selected range label matches any in the new priceRanges
+    // Actually, comparing by min/max is safer
+    const currentMin = selectedPriceRange.min;
+    const currentMax = selectedPriceRange.max;
+    const matchingRange = priceRanges.find(r => r.min === currentMin && r.max === currentMax);
+    if (matchingRange && matchingRange !== selectedPriceRange) {
+      setSelectedPriceRange(matchingRange);
+    }
+  }, [priceRanges, selectedPriceRange]);
+
   // Apply filters and sorting
-  useMemo(() => {
+  useEffect(() => {
     let filtered = [...products];
 
     // Search filter
@@ -90,7 +107,7 @@ export function ProductFilters({
 
   const activeFiltersCount = [
     selectedCategory,
-    selectedPriceRange !== priceRanges[0],
+    selectedPriceRange.min !== 0 || selectedPriceRange.max !== Infinity,
   ].filter(Boolean).length;
 
   const clearFilters = () => {

@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Plus, Minus, ShoppingBag, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useCart } from '@/context/CartContext';
-import { formatCurrency } from '@/utils/formatCurrency';
+import { useCurrency } from '@/context/CurrencyContext';
 
 interface CartSlideOverProps {
   isOpen: boolean;
@@ -11,6 +11,7 @@ interface CartSlideOverProps {
 
 export function CartSlideOver({ isOpen, onClose }: CartSlideOverProps) {
   const { items, updateQuantity, removeFromCart, subtotal, shipping, total } = useCart();
+  const { formatPrice } = useCurrency();
 
   return (
     <AnimatePresence>
@@ -129,7 +130,7 @@ export function CartSlideOver({ isOpen, onClose }: CartSlideOverProps) {
 
                             {/* Price */}
                             <span className="font-semibold text-foreground">
-                              {formatCurrency(item.product.price * item.quantity)}
+                              {formatPrice(item.product.price * item.quantity)}
                             </span>
                           </div>
                         </div>
@@ -154,7 +155,7 @@ export function CartSlideOver({ isOpen, onClose }: CartSlideOverProps) {
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
                       <span className="text-muted-foreground">Subtotal</span>
-                      <span className="font-medium">{formatCurrency(subtotal)}</span>
+                      <span className="font-medium">{formatPrice(subtotal)}</span>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-muted-foreground">Shipping</span>
@@ -162,19 +163,19 @@ export function CartSlideOver({ isOpen, onClose }: CartSlideOverProps) {
                         {shipping === 0 ? (
                           <span className="text-success">Free</span>
                         ) : (
-                          formatCurrency(shipping)
+                          formatPrice(shipping)
                         )}
                       </span>
                     </div>
                     {shipping > 0 && (
                       <p className="text-xs text-muted-foreground">
-                        Free shipping on orders over $500
+                        Free shipping on orders over {formatPrice(500)}
                       </p>
                     )}
                     <div className="border-t border-border pt-2">
                       <div className="flex justify-between text-lg font-bold">
                         <span>Total</span>
-                        <span>{formatCurrency(total)}</span>
+                        <span>{formatPrice(total)}</span>
                       </div>
                     </div>
                   </div>

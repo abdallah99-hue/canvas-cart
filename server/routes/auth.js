@@ -38,9 +38,11 @@ router.post('/register', async (req, res) => {
         token: generateToken(user._id),
       });
     } else {
+      console.log('Invalid user data - creation failed');
       res.status(400).json({ message: 'Invalid user data' });
     }
   } catch (error) {
+    console.error('Registration error:', error);
     res.status(500).json({ message: error.message });
   }
 });

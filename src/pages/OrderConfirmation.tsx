@@ -3,11 +3,12 @@ import { motion } from 'framer-motion';
 import { CheckCircle, Package, Truck, Home, ArrowRight, Download, Share2 } from 'lucide-react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Order } from '@/types';
-import { formatCurrency } from '@/utils/formatCurrency';
+import { useCurrency } from '@/context/CurrencyContext';
 
 export default function OrderConfirmation() {
   const { orderId } = useParams<{ orderId: string }>();
   const [orders] = useLocalStorage<Order[]>('art-gallery-orders', []);
+  const { formatPrice } = useCurrency();
   
   const order = orders.find((o) => o.id === orderId);
 
@@ -139,7 +140,7 @@ export default function OrderConfirmation() {
                 Payment Method: Cash On Delivery (COD)
               </p>
               <p className="mt-1 text-sm text-foreground/80">
-                Please have {formatCurrency(order.grandTotal)} ready when your order arrives
+                Please have {formatPrice(order.grandTotal)} ready when your order arrives
               </p>
             </div>
 
@@ -164,7 +165,7 @@ export default function OrderConfirmation() {
                       <div className="flex items-center justify-between">
                         <p className="text-sm text-muted-foreground">Qty: {item.quantity}</p>
                         <p className="font-semibold text-foreground">
-                          {formatCurrency(item.product.price * item.quantity)}
+                          {formatPrice(item.product.price * item.quantity)}
                         </p>
                       </div>
                     </div>
@@ -195,7 +196,7 @@ export default function OrderConfirmation() {
                 <div className="space-y-2">
                   <div className="flex justify-between text-muted-foreground">
                     <span>Subtotal</span>
-                    <span>{formatCurrency(order.total)}</span>
+                    <span>{formatPrice(order.total)}</span>
                   </div>
                   <div className="flex justify-between text-muted-foreground">
                     <span>Shipping</span>
@@ -203,14 +204,14 @@ export default function OrderConfirmation() {
                       {order.shipping === 0 ? (
                         <span className="text-success">Free</span>
                       ) : (
-                        formatCurrency(order.shipping)
+                        formatPrice(order.shipping)
                       )}
                     </span>
                   </div>
                   <div className="border-t border-border pt-2">
                     <div className="flex justify-between text-lg font-bold text-foreground">
                       <span>Total (COD)</span>
-                      <span>{formatCurrency(order.grandTotal)}</span>
+                      <span>{formatPrice(order.grandTotal)}</span>
                     </div>
                   </div>
                 </div>

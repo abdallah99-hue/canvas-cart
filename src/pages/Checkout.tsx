@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, CreditCard, Truck, Check, AlertCircle } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
-import { formatCurrency } from '@/utils/formatCurrency';
+import { useCurrency } from '@/context/CurrencyContext';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Order, CustomerInfo } from '@/types';
 import { z } from 'zod';
@@ -22,6 +22,7 @@ const customerSchema = z.object({
 export default function Checkout() {
   const navigate = useNavigate();
   const { items, subtotal, shipping, total, clearCart } = useCart();
+  const { formatPrice } = useCurrency();
   const [orders, setOrders] = useLocalStorage<Order[]>('art-gallery-orders', []);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -374,7 +375,7 @@ export default function Checkout() {
                       <p className="text-xs text-muted-foreground">Qty: {item.quantity}</p>
                     </div>
                     <p className="text-sm font-medium text-foreground">
-                      {formatCurrency(item.product.price * item.quantity)}
+                      {formatPrice(item.product.price * item.quantity)}
                     </p>
                   </div>
                 ))}
@@ -384,7 +385,7 @@ export default function Checkout() {
               <div className="mt-4 space-y-3">
                 <div className="flex justify-between text-foreground">
                   <span>Subtotal</span>
-                  <span className="font-medium">{formatCurrency(subtotal)}</span>
+                  <span className="font-medium">{formatPrice(subtotal)}</span>
                 </div>
                 <div className="flex justify-between text-foreground">
                   <span className="flex items-center gap-1">
@@ -395,14 +396,14 @@ export default function Checkout() {
                     {shipping === 0 ? (
                       <span className="text-success">Free</span>
                     ) : (
-                      formatCurrency(shipping)
+                      formatPrice(shipping)
                     )}
                   </span>
                 </div>
                 <div className="border-t border-border pt-3">
                   <div className="flex justify-between text-lg font-bold text-foreground">
                     <span>Total</span>
-                    <span>{formatCurrency(total)}</span>
+                    <span>{formatPrice(total)}</span>
                   </div>
                 </div>
               </div>
