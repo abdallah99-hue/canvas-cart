@@ -1,9 +1,8 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight, Star, Truck, Shield, Award, Quote } from 'lucide-react';
 import { ProductCard } from '@/components/ProductCard';
-import products from '@/data/products.json';
-import categories from '@/data/categories.json';
 import { Product, Category } from '@/types';
 
 const testimonials = [
@@ -52,8 +51,31 @@ const features = [
 ];
 
 export default function Home() {
-  const featuredProducts = (products as Product[]).filter((p) => p.featured).slice(0, 4);
-  const typedCategories = categories as Category[];
+  const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
+  const [typedCategories, setTypedCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [prodRes, catRes] = await Promise.all([
+          fetch('/api/products'),
+          fetch('/api/categories')
+        ]);
+        if (prodRes.ok) {
+          const prods = await prodRes.json();
+          const mappedProds = prods.map((p: any) => ({ ...p, id: p._id || p.id }));
+          setFeaturedProducts(mappedProds.filter((p: Product) => p.featured).slice(0, 4));
+        }
+        if (catRes.ok) {
+          const cats = await catRes.json();
+          setTypedCategories(cats);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <div className="min-h-screen">

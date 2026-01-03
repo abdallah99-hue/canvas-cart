@@ -3,27 +3,57 @@ import { useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ProductCard } from '@/components/ProductCard';
 import { ProductFilters } from '@/components/ProductFilters';
-import productsData from '@/data/products.json';
-import { Product } from '@/types';
+import { Product, Category } from '@/types';
+import { Loader2 } from 'lucide-react';
 
 export default function Products() {
   const [searchParams] = useSearchParams();
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>(productsData as Product[]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  // Handle URL search params for category
+  // Fetch data
   useEffect(() => {
-    const category = searchParams.get('category');
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const [productsRes, categoriesRes] = await Promise.all([
+          fetch('/api/products'),
+          fetch('/api/categories')
+        ]);
+
+        if (!productsRes.ok || !categoriesRes.ok) throw new Error('Failed to fetch data');
+
+        const productsData = await productsRes.json();
+        const categoriesData = await categoriesRes.json();
+
+        // Map _id to id for products
+        const mappedProducts = productsData.map((p: any) => ({
+            ...p,
+            id: p._id || p.id // Use _id if available, fallback to id
+        }));
+
+        setProducts(mappedProducts);
+        setCategories(categoriesData);
+        // Initial set, but ProductFilters will override via onFilter
+        setFilteredProducts(mappedProducts);
+      } catch (err) {
+        setError('Failed to load products. Please try again later.');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // Sync search query from URL
+  useEffect(() => {
     const search = searchParams.get('search');
-    
-    if (category) {
-      setFilteredProducts(
-        (productsData as Product[]).filter(
-          (p) => p.category.toLowerCase() === category.toLowerCase()
-        )
-      );
-    }
-    
     if (search) {
       setSearchQuery(search);
     }
@@ -32,6 +62,22 @@ export default function Products() {
   const handleFilter = useCallback((filtered: Product[]) => {
     setFilteredProducts(filtered);
   }, []);
+
+  if (loading) {
+      return (
+          <div className="flex min-h-screen items-center justify-center">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          </div>
+      )
+  }
+
+  if (error) {
+      return (
+          <div className="flex min-h-screen items-center justify-center text-red-500">
+              {error}
+          </div>
+      )
+  }
 
   return (
     <div className="min-h-screen bg-gradient-hero py-8 lg:py-12">
@@ -52,7 +98,9 @@ export default function Products() {
 
         {/* Filters */}
         <ProductFilters
-          products={productsData as Product[]}
+          products={products}
+          categories={categories}
+          initialCategory={searchParams.get('category') || ''}
           onFilter={handleFilter}
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}

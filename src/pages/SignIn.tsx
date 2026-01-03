@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -10,7 +10,14 @@ import { useAuth } from "@/context/AuthContext";
 const SignIn = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, user } = useAuth();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user, navigate]);
+
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -33,8 +40,8 @@ const SignIn = () => {
     setIsLoading(true);
 
     const url = isLogin
-      ? "http://localhost:5000/api/auth/login"
-      : "http://localhost:5000/api/auth/register";
+      ? "/api/auth/login"
+      : "/api/auth/register";
 
     try {
       const response = await fetch(url, {
@@ -48,12 +55,22 @@ const SignIn = () => {
       const data = await response.json();
 
       if (response.ok) {
-        login(data);
-        toast({
-          title: isLogin ? "Signed in" : "Account created",
-          description: isLogin ? "Welcome back!" : "Welcome to MyArtSpace!",
-        });
-        navigate("/");
+        if (isLogin) {
+          login(data);
+          toast({
+            title: "Signed in",
+            description: "Welcome back!",
+          });
+          navigate("/");
+        } else {
+          // Registration successful - switch to login
+          setIsLogin(true);
+          setFormData((prev) => ({ ...prev, password: "" }));
+          toast({
+            title: "Account created",
+            description: "Please sign in with your new account",
+          });
+        }
       } else {
         toast({
           variant: "destructive",

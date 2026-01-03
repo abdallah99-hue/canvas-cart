@@ -1,4 +1,4 @@
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -14,7 +14,15 @@ import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import { CurrencySelector } from '@/components/CurrencySelector';
 import { cn } from '@/lib/utils';
-import categories from '@/data/categories.json';
+import { Category } from '@/types';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -26,9 +34,17 @@ export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [categories, setCategories] = useState<Category[]>([]);
   const { totalItems } = useCart();
   const { user, logout } = useAuth();
   const location = useLocation();
+
+  useEffect(() => {
+    fetch('/api/categories')
+      .then(res => res.json())
+      .then(data => setCategories(data))
+      .catch(err => console.error('Failed to fetch categories:', err));
+  }, []);
 
   const handleSearch = (e: FormEvent) => {
     e.preventDefault();
@@ -131,13 +147,42 @@ export function Navbar() {
             </div>
 
             {/* Sign In - Desktop */}
-            <Link
-              to="/signin"
-              className="hidden items-center gap-2 text-sm font-medium text-foreground/80 transition-colors hover:text-secondary lg:flex"
-            >
-              <User className="h-5 w-5" />
-              <span>Sign In</span>
-            </Link>
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger className="hidden items-center gap-2 text-sm font-medium text-foreground/80 transition-colors hover:text-secondary lg:flex outline-none">
+                  <User className="h-5 w-5" />
+                  <span>{user.name}</span>
+                  <ChevronDown className="h-4 w-4 opacity-50" />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  {user.isAdmin && (
+                    <DropdownMenuItem asChild>
+                      <Link to="/admin" className="cursor-pointer">
+                        Admin Dashboard
+                      </Link>
+                    </DropdownMenuItem>
+                  )}
+                  <DropdownMenuItem asChild>
+                    <Link to="/profile" className="cursor-pointer">
+                      Profile Settings
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={logout} className="cursor-pointer text-destructive focus:text-destructive">
+                    Logout
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Link
+                to="/signin"
+                className="hidden items-center gap-2 text-sm font-medium text-foreground/80 transition-colors hover:text-secondary lg:flex"
+              >
+                <User className="h-5 w-5" />
+                <span>Sign In</span>
+              </Link>
+            )}
 
             {/* Cart */}
             <Link
@@ -241,17 +286,26 @@ export function Navbar() {
                 {/* Mobile Sign In */}
                 {user ? (
                   <div className="border-t border-border pt-4">
-                    <div className="flex items-center justify-between px-3 py-2">
-                      <span className="text-sm font-medium text-foreground/80">Hi, {user.name}</span>
-                      <button
-                        onClick={() => {
-                          logout();
-                          setIsMenuOpen(false);
-                        }}
-                        className="text-sm font-medium text-destructive hover:text-destructive/80"
+                    <div className="px-3 py-2">
+                      <div className="mb-2 flex items-center justify-between">
+                        <span className="text-sm font-medium text-foreground/80">Hi, {user.name}</span>
+                        <button
+                          onClick={() => {
+                            logout();
+                            setIsMenuOpen(false);
+                          }}
+                          className="text-sm font-medium text-destructive hover:text-destructive/80"
+                        >
+                          Logout
+                        </button>
+                      </div>
+                      <Link
+                        to="/profile"
+                        onClick={() => setIsMenuOpen(false)}
+                        className="block rounded-md py-2 text-sm text-foreground/80 transition-colors hover:text-secondary"
                       >
-                        Logout
-                      </button>
+                        Profile Settings
+                      </Link>
                     </div>
                   </div>
                 ) : (

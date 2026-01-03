@@ -1,13 +1,14 @@
 import { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, SlidersHorizontal, X, ChevronDown } from 'lucide-react';
-import { Product } from '@/types';
-import categories from '@/data/categories.json';
+import { Product, Category } from '@/types';
 import { cn } from '@/lib/utils';
 import { useCurrency } from '@/context/CurrencyContext';
 
 interface ProductFiltersProps {
   products: Product[];
+  categories: Category[];
+  initialCategory?: string;
   onFilter: (filtered: Product[]) => void;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
@@ -23,12 +24,20 @@ const sortOptions = [
 
 export function ProductFilters({
   products,
+  categories,
+  initialCategory = '',
   onFilter,
   searchQuery,
   setSearchQuery,
 }: ProductFiltersProps) {
   const { formatPrice } = useCurrency();
-  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [selectedCategory, setSelectedCategory] = useState<string>(initialCategory);
+
+  useEffect(() => {
+    if (initialCategory) {
+        setSelectedCategory(initialCategory);
+    }
+  }, [initialCategory]);
   
   const priceRanges = useMemo(() => [
     { label: 'All Prices', min: 0, max: Infinity },
