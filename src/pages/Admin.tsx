@@ -7,6 +7,16 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Trash2, Edit, Plus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 interface User {
   _id: string;
@@ -22,6 +32,19 @@ interface Product {
   price: number;
   category: string;
   stock: number;
+  image?: string;
+  artist?: string;
+  description?: string;
+}
+
+interface ProductFormState {
+  name: string;
+  price: number;
+  category: string;
+  stock: number;
+  image: string;
+  artist: string;
+  description: string;
 }
 
 const Admin = () => {
@@ -31,6 +54,17 @@ const Admin = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isProductDialogOpen, setIsProductDialogOpen] = useState(false);
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [productForm, setProductForm] = useState<ProductFormState>({
+    name: "",
+    price: 0,
+    category: "",
+    stock: 0,
+    image: "",
+    artist: "",
+    description: "",
+  });
 
   useEffect(() => {
     if (!user) {
@@ -115,6 +149,104 @@ const Admin = () => {
     }
   };
 
+  const handleAddProductClick = () => {
+    setEditingProduct(null);
+    setProductForm({
+      name: "",
+      price: 0,
+      category: "",
+      stock: 0,
+      image: "",
+      artist: "",
+      description: "",
+    });
+    setIsProductDialogOpen(true);
+  };
+
+  const handleEditProductClick = (product: Product) => {
+    setEditingProduct(product);
+    setProductForm({
+      name: product.name || "",
+      price: product.price || 0,
+      category: product.category || "",
+      stock: product.stock || 0,
+      image: product.image || "",
+      artist: product.artist || "",
+      description: product.description || "",
+    });
+    setIsProductDialogOpen(true);
+  };
+
+  const handleProductFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setProductForm((prev) => ({
+      ...prev,
+      [name]: name === "price" || name === "stock" ? Number(value) : value,
+    }));
+  };
+
+  const handleSaveProduct = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const isEdit = Boolean(editingProduct && (editingProduct._id || editingProduct.id));
+      const url = isEdit
+        ? `/api/products/${editingProduct?._id || editingProduct?.id}`
+        : "/api/products";
+      const method = isEdit ? "PUT" : "POST";
+
+      const res = await fetch(url, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user?.token}`,
+        },
+        body: JSON.stringify({
+          ...productForm,
+          // simple sku generation when creating
+          ...(isEdit
+            ? {}
+            : {
+                sku:
+                  "ART-" +
+                  Date.now().toString(36).toUpperCase().slice(-3) +
+                  Math.random().toString(36).toUpperCase().slice(2, 5),
+              }),
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: data.message || "Failed to save product",
+        });
+        return;
+      }
+
+      if (isEdit) {
+        setProducts((prev) =>
+          prev.map((p) => ((p._id || p.id) === (data._id || data.id) ? data : p)),
+        );
+        toast({ title: "Success", description: "Product updated" });
+      } else {
+        setProducts((prev) => [...prev, data]);
+        toast({ title: "Success", description: "Product created" });
+      }
+
+      setIsProductDialogOpen(false);
+      setEditingProduct(null);
+    } catch (error) {
+      console.error(error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to save product",
+      });
+    }
+  };
+
   if (!user || !user.isAdmin) {
     return null;
   }
@@ -142,7 +274,9 @@ const Admin = () => {
                   Manage your product catalog ({products.length} products)
                 </CardDescription>
               </div>
-              <Button size="sm"><Plus className="mr-2 h-4 w-4" /> Add Product</Button>
+              <Button size="sm" onClick={handleAddProductClick}>
+                <Plus className="mr-2 h-4 w-4" /> Add Product
+              </Button>
             </CardHeader>
             <CardContent>
               <Table>
@@ -163,7 +297,12 @@ const Admin = () => {
                       <TableCell>${product.price}</TableCell>
                       <TableCell>{product.stock || 0}</TableCell>
                       <TableCell className="text-right">
-                        <Button variant="ghost" size="icon" className="mr-2">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="mr-2"
+                          onClick={() => handleEditProductClick(product)}
+                        >
                           <Edit className="h-4 w-4" />
                         </Button>
                         <Button 
@@ -240,6 +379,102 @@ const Admin = () => {
           </Card>
         </TabsContent>
       </Tabs>
+      <Dialog open={isProductDialogOpen} onOpenChange={setIsProductDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{editingProduct ? "Edit Product" : "Add Product"}</DialogTitle>
+            <DialogDescription>Manage product details</DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleSaveProduct} className="space-y-4">
+            <div className="grid gap-2">
+              <Label htmlFor="name">Name</Label>
+              <Input
+                id="name"
+                name="name"
+                value={productForm.name}
+                onChange={handleProductFormChange}
+                required
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="artist">Artist</Label>
+              <Input
+                id="artist"
+                name="artist"
+                value={productForm.artist}
+                onChange={handleProductFormChange}
+                required
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="category">Category</Label>
+              <Input
+                id="category"
+                name="category"
+                value={productForm.category}
+                onChange={handleProductFormChange}
+                required
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="grid gap-2">
+                <Label htmlFor="price">Price</Label>
+                <Input
+                  id="price"
+                  name="price"
+                  type="number"
+                  min="0"
+                  value={productForm.price}
+                  onChange={handleProductFormChange}
+                  required
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="stock">Stock</Label>
+                <Input
+                  id="stock"
+                  name="stock"
+                  type="number"
+                  min="0"
+                  value={productForm.stock}
+                  onChange={handleProductFormChange}
+                />
+              </div>
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="image">Image URL</Label>
+              <Input
+                id="image"
+                name="image"
+                value={productForm.image}
+                onChange={handleProductFormChange}
+                required
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="description">Description</Label>
+              <Input
+                id="description"
+                name="description"
+                value={productForm.description}
+                onChange={handleProductFormChange}
+                />
+            </div>
+            <DialogFooter>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setIsProductDialogOpen(false)}
+              >
+                Cancel
+              </Button>
+              <Button type="submit">
+                {editingProduct ? "Save changes" : "Create product"}
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
