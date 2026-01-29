@@ -30,8 +30,8 @@ const App = () => (
         <TooltipProvider>
         <Toaster />
         <Sonner />
-        <BrowserRouter>
-          <div className="flex min-h-screen flex-col">
+        <BrowserRouter future={{ v7_relativeSplatPath: true }}>
+      <div className="flex min-h-screen flex-col">
             <Navbar />
             <main className="flex-1">
               <Routes>
